@@ -29,8 +29,6 @@ def evaluate(expr):
     #after all checking is added, should end up with an empty operators stack, 
     #and a full queue
     
-        
-    
 expression = input("Evaluate: ")
 #get rid of spaces in user input
 expression = expression.replace(" ","")
