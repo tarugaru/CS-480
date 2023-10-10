@@ -16,7 +16,7 @@ def parseExp():
     while len(expression)>0 and validExp:
         element = expression.pop(0)
         if element.isdigit() or element == ".":
-            getNumVal(element)
+            validExp = getNumVal(element)
         elif element == "c":
             validExp = evalCos(element)
         elif element == "s":
@@ -25,10 +25,21 @@ def parseExp():
             evalLog(element)
         elif element == "n":
             evalLn(element)
-        elif element == "+" or "*" or "-":
+        elif element == "+" or element =="*" or element=="-" or element== "(":
+            print("made it")
             evalOp(element)
+        elif element == ")":
+            closed_par(element)
         print(postfix)
         print(operators)
+    
+def closed_par(element):
+    prevOp = operators.pop()
+    while prevOp != "(":
+        postfix.append(prevOp)
+        print(postfix)
+        prevOp = operators.pop()
+    
         
 def evalCos(element):
     validCos= True
@@ -80,28 +91,38 @@ def evalLn(element):
     
 def getNumVal(element):
     char = None
-    expFlag = bool(False)
+    expFlag = 0
+    decFlag = 0
     if len(expression)>0:
         char = expression[0]
     while char != None:
         if char.isdigit() or char=="." or char=="^":
             if char == "^":
-                expFlag = bool(True)
+                expFlag += 1
             element = element + char
             expression.pop(0)
+            if char == ".":
+                decFlag +=1
             if len(expression)> 0:
                 char = expression[0]
             else:
                 char = None
         else:
             char = None
-    if expFlag:
+    if expFlag == 1  and decFlag<2:
         num =element.split("^")
         base = (float)(num[0])
         exp = (float)(num[1])
         element = base**exp
-    element = (float)(element)
-    postfix.append(element)
+        return True
+    elif expFlag == 0 and decFlag <2: 
+        element = (float)(element)
+        postfix.append(element)
+        return True
+    else:
+        print("numerical error")
+        return False
+    
     
 def evalOp(element):
     if len(operators) >0:
@@ -110,12 +131,15 @@ def evalOp(element):
             postfix.append(prevOp)
             operators.pop()
             operators.append(element)
+        else:
+            operators.append(element)
     else:
         operators.append(element)
-    if expression[0] == "-":
+    if len(expression) > 0 and expression[0] == "-":
         getNumVal(expression.pop(0))
     
-expr = input("Evaluate: ")
+user_input = input("Evaluate: ")
+expr = "(" + user_input + ")"
 #get rid of spaces in user input
 expr = expr.replace(" ","")
 expr = expr.replace("sin", "s")
