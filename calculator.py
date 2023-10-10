@@ -114,6 +114,7 @@ def getNumVal(element):
         base = (float)(num[0])
         exp = (float)(num[1])
         element = base**exp
+        postfix.append(element)
         return True
     elif expFlag == 0 and decFlag <2: 
         element = (float)(element)
