@@ -6,6 +6,8 @@
     # objective: implement a simple calculator that takes in user input (Strings)
 # 10/2/23 -  10/11/23
 # calculator.py
+
+#commits can be found on github: https://github.com/tarugaru/CS-480
 """
 import math
 
@@ -14,7 +16,7 @@ postfix = []
 operators = []
 
 def evalExp(ex_list):
-    print(ex_list)
+    #print(ex_list)
     validExp = True
     if ex_list[0] == "-":
         element = ex_list.pop(0)
@@ -28,18 +30,18 @@ def evalExp(ex_list):
         else:
             validExp = eval_func(element)
     if validExp:
-        print(postfix)
-        print(operators)
+        #print(postfix)
+        #print(operators)
         num = shunting_algo()
-        print("eval expr now")
+        #print("eval expr now")
         return num;
     else:
-        print(postfix)
-        print(operators)
-        print ("function terminated")
+        #print(postfix)
+        #print(operators)
+        #print ("function terminated")
         return "x"
-    print(postfix)
-    print(operators)
+    #print(postfix)
+    #print(operators)
     '''
     is_float func from:
         https://pythonhow.com/how/check-if-a-string-is-a-float/#:~:text=To%20check%20if%20a%20string%20is%20a%20number%20(float)%20in,casted%20to%20float%20or%20not.
@@ -51,36 +53,19 @@ def is_float(string):
     except ValueError:
         return False
 def shunting_algo():
-    print("here")
+    #print("here")
     '''
     while len(operators)>0:
         postfix.append(operators.pop(0))
     '''
-    print(postfix)
-    stack = []
+    #print(postfix)
     while len(operators)>0:
         num_2 = postfix.pop()
         num_1 = postfix.pop()
         num = evaluate(num_1,num_2,operators.pop())
         postfix.append(num)
-    '''
-    while len(postfix)>0:
-        print("postfix: ")
-        print(postfix)
-        element = postfix.pop(0)
-        if is_float(element):
-            stack.append(element)
-            print("stack ")
-            print(stack)
-        else:
-            num_1 = stack.pop(0)
-            num_2 = stack.pop(0)
-            num = evaluate(num_1, num_2, element)
-            print(str(num))
-            stack[:0] = [num]
-    '''
-    print("done w algo")
-    print(stack)
+    #print("done w algo")
+    #print(stack)
     return postfix.pop()
 def evaluate(n1,n2,element):
      if element == "+":
@@ -92,7 +77,7 @@ def evaluate(n1,n2,element):
      elif element == "/":
          return n1/n2
 def eval_func(element):
-    print("reached")
+    #print("reached")
     if element == "c":
         element = ex_list.pop(0)
         flag = True
@@ -102,7 +87,7 @@ def eval_func(element):
             element = postfix.pop()
             element = math.cos(element)
             postfix.append(element)
-        print("cosine")
+        #print("cosine")
         return flag
     elif element == "s":
         element = ex_list.pop(0)
@@ -113,7 +98,7 @@ def eval_func(element):
             element = postfix.pop()
             element = math.sin(element)
             postfix.append(element)
-        print("sin")
+        #print("sin")
         return flag
     if element == "t":
         element = ex_list.pop(0)
@@ -124,7 +109,7 @@ def eval_func(element):
             element = postfix.pop()
             element = math.tan(element)
             postfix.append(element)
-        print("cosine")
+        #print("cosine")
         return flag
     elif element == "l":
         element = ex_list.pop(0)
@@ -135,7 +120,7 @@ def eval_func(element):
             element = postfix.pop()
             element = math.log10(element)
             postfix.append(element)
-        print("log")
+        #print("log")
         return flag
     elif element == "n":
         element = ex_list.pop(0)
@@ -146,10 +131,10 @@ def eval_func(element):
             element = postfix.pop()
             element = math.log(element)
             postfix.append(element)
-        print("natural log")
+        #print("natural log")
         return flag
     else:
-        print("invalid character")
+        #print("invalid character")
         return False
 def opVal(element):
     flag = True
@@ -173,7 +158,7 @@ def getNumVal(element):
     decFlag = 0
     if len(ex_list)>0:
         char = ex_list[0]
-        print("char: " + char)
+        #print("char: " + char)
     while char != None:
         if char.isdigit() or char=="." or char=="^":
             if char == "^":
@@ -264,45 +249,4 @@ if string == "x":
     print("try again")
 elif flag:
     print("final answer: " + str(string))
-#expression = (list)(string)
-#print(expression)
 
-'''
-open_pars = []
-close_pars = []
-par_pairs = []
-iterator = 0
-flag = True
-while iterator < len(expression):
-    if expression[iterator] == "(":
-        open_pars.append(iterator)
-    elif expression[iterator] == ")":
-        close_pars.append(iterator)
-    iterator+=1
-if len(close_pars) == len(open_pars):
-    while len(close_pars) > 0:
-        par_pairs.append(point(open_pars.pop(), close_pars.pop(0)))
-else:
-    print("parenthesis error")
-    flag = False
-#at this point all the parentheses should be paired up from most inside to least
-iterator = 0
-while iterator < len(par_pairs) and flag:
-    operators = None
-    postfix = None
-    pair = par_pairs.pop(0)
-    op = pair.getOP()
-    cp = pair.getCP()
-    expr = string[op+1:cp]
-    ex_list = list(expr)
-    number = evalExp(ex_list)
-    print(str(number))
-    if is_float(number):
-        #we need to add this number back into our original expression,
-        #replacing the () we just evaluated. 
-        print("hi")
-    else:
-        print("system terminated")
-        flag = False
-    iterator+=1
-'''
