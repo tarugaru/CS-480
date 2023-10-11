@@ -1,112 +1,194 @@
+# -*- coding: utf-8 -*-
+"""
 # Tallulah Cook
 # CS 480
 # Calculator Application:
     # objective: implement a simple calculator that takes in user input (Strings)
-# 10/2/23 - 
+# 10/2/23 -  10/11/23
 # calculator.py
-operators =[]
+"""
+import math
+
+ex_list = []
 postfix = []
-expression = []
+operators = []
 
-
-def parseExp():
+def evalExp(ex_list):
+    print(ex_list)
     validExp = True
-    if expression[0]=="-":
-        getNumVal(expression.pop(0))
-    while len(expression)>0 and validExp:
-        element = expression.pop(0)
+    if ex_list[0] == "-":
+        element = ex_list.pop(0)
+        validExp = getNumVal(element)
+    while len(ex_list)>0 and validExp:
+        element = ex_list.pop(0)
         if element.isdigit() or element == ".":
             validExp = getNumVal(element)
-        elif element == "c":
-            validExp = evalCos(element)
-        elif element == "s":
-            evalSin(element)
-        elif element == "l":
-            evalLog(element)
-        elif element == "n":
-            evalLn(element)
-        elif element == "+" or element =="*" or element=="-" or element== "(":
-            print("made it")
-            evalOp(element)
-        elif element == ")":
-            closed_par(element)
+        elif element == "+" or element == "-" or element == "*" or element == "/":
+            validExp = opVal(element)
+        else:
+            validExp = eval_func(element)
+    if validExp:
         print(postfix)
         print(operators)
-    
-def closed_par(element):
-    prevOp = operators.pop()
-    while prevOp != "(":
-        postfix.append(prevOp)
+        num = shunting_algo()
+        print("eval expr now")
+        return num;
+    else:
         print(postfix)
-        prevOp = operators.pop()
-    
-        
-def evalCos(element):
-    validCos= True
-    print("eval cos")
-    if expression[0]=="(":
-        expression.pop(0)
-        #evaluate the inside of cos
-        print("confirmed")
+        print(operators)
+        print ("function terminated")
+        return "x"
+    print(postfix)
+    print(operators)
+    '''
+    is_float func from:
+        https://pythonhow.com/how/check-if-a-string-is-a-float/#:~:text=To%20check%20if%20a%20string%20is%20a%20number%20(float)%20in,casted%20to%20float%20or%20not.
+    '''
+def is_float(string):
+    try:
+        float(string)
+        return True
+    except ValueError:
+        return False
+def shunting_algo():
+    print("here")
+    '''
+    while len(operators)>0:
+        postfix.append(operators.pop(0))
+    '''
+    print(postfix)
+    stack = []
+    while len(operators)>0:
+        num_2 = postfix.pop()
+        num_1 = postfix.pop()
+        num = evaluate(num_1,num_2,operators.pop())
+        postfix.append(num)
+    '''
+    while len(postfix)>0:
+        print("postfix: ")
+        print(postfix)
+        element = postfix.pop(0)
+        if is_float(element):
+            stack.append(element)
+            print("stack ")
+            print(stack)
+        else:
+            num_1 = stack.pop(0)
+            num_2 = stack.pop(0)
+            num = evaluate(num_1, num_2, element)
+            print(str(num))
+            stack[:0] = [num]
+    '''
+    print("done w algo")
+    print(stack)
+    return postfix.pop()
+def evaluate(n1,n2,element):
+     if element == "+":
+         return n1+n2
+     elif element == "-":
+         return n1-n2
+     elif element == "*":
+         return n1*n2
+     elif element == "/":
+         return n1/n2
+def eval_func(element):
+    print("reached")
+    if element == "c":
+        element = ex_list.pop(0)
+        flag = True
+        if element.isdigit():
+            flag = getNumVal(element)
+        if flag:
+            element = postfix.pop()
+            element = math.cos(element)
+            postfix.append(element)
+        print("cosine")
+        return flag
+    elif element == "s":
+        element = ex_list.pop(0)
+        flag = True
+        if element.isdigit():
+            flag = getNumVal(element)
+        if flag:
+            element = postfix.pop()
+            element = math.sin(element)
+            postfix.append(element)
+        print("sin")
+        return flag
+    if element == "t":
+        element = ex_list.pop(0)
+        flag = True
+        if element.isdigit():
+            flag = getNumVal(element)
+        if flag:
+            element = postfix.pop()
+            element = math.tan(element)
+            postfix.append(element)
+        print("cosine")
+        return flag
+    elif element == "l":
+        element = ex_list.pop(0)
+        flag = True
+        if element.isdigit():
+            flag = getNumVal(element)
+        if flag:
+            element = postfix.pop()
+            element = math.log10(element)
+            postfix.append(element)
+        print("log")
+        return flag
+    elif element == "n":
+        element = ex_list.pop(0)
+        flag = True
+        if element.isdigit():
+            flag = getNumVal(element)
+        if flag:
+            element = postfix.pop()
+            element = math.log(element)
+            postfix.append(element)
+        print("natural log")
+        return flag
     else:
-        validCos = False
-        print("invalid cos")
-    return validCos
-
-def evalSin(element):
-    validSin= True
-    print("eval sin")
-    if expression[0]=="(":
-        expression.pop(0)
-        #evaluate the inside of cos
-        print("confirmed")
+        print("invalid character")
+        return False
+def opVal(element):
+    flag = True
+    if len(operators)>0:
+        prevOp = operators[len(operators)-1]
+        if (prevOp == "*" or prevOp == "/") and (element == "+" or element == "-"):
+            postfix.append(prevOp)
+            operators.pop()
+            operators.append(element)
+        else:
+            operators.append(element)
     else:
-        validSin = False
-        print("invalid cos")
-    return validSin
-    
-def evalLog(element):
-    validLog= True
-    print("eval log")
-    if expression[0]=="(":
-        expression.pop(0)
-        #evaluate the inside of cos
-        print("confirmed")
-    else:
-        validLog = False
-        print("invalid log")
-    return validLog
-    
-def evalLn(element):
-    validLn= True
-    print("eval ln")
-    if expression[0]=="(":
-        expression.pop(0)
-        #evaluate the inside of cos
-        print("confirmed")
-    else:
-        validLn = False
-        print("invalid log")
-    return validLn
-    
-def getNumVal(element):
+        operators.append(element)
+    if len(ex_list) > 0 and ex_list[0] == "-":
+        flag = getNumVal(ex_list.pop(0))
+    return flag
+def getNumVal(element):    
+    #parse through ex_list to get the number together
     char = None
     expFlag = 0
     decFlag = 0
-    if len(expression)>0:
-        char = expression[0]
+    if len(ex_list)>0:
+        char = ex_list[0]
+        print("char: " + char)
     while char != None:
         if char.isdigit() or char=="." or char=="^":
             if char == "^":
                 expFlag += 1
             element = element + char
-            expression.pop(0)
+            ex_list.pop(0)
             if char == ".":
                 decFlag +=1
-            if len(expression)> 0:
-                char = expression[0]
+            if len(ex_list)> 0:
+                char = ex_list[0]
             else:
                 char = None
+        elif char == "-" and element[-1]=="-":
+            print("too many minus signs")
+            return False
         else:
             char = None
     if expFlag == 1  and decFlag<2:
@@ -123,32 +205,104 @@ def getNumVal(element):
     else:
         print("numerical error")
         return False
-    
-    
-def evalOp(element):
-    if len(operators) >0:
-        prevOp = operators[len(operators)-1]
-        if (prevOp == "*" or prevOp == "/") and (element == "+" or element == "-"):
-            postfix.append(prevOp)
-            operators.pop()
-            operators.append(element)
-        else:
-            operators.append(element)
-    else:
-        operators.append(element)
-    if len(expression) > 0 and expression[0] == "-":
-        getNumVal(expression.pop(0))
-    
-user_input = input("Evaluate: ")
-expr = "(" + user_input + ")"
-#get rid of spaces in user input
-expr = expr.replace(" ","")
-expr = expr.replace("sin", "s")
-expr = expr.replace("cos","c")
-expr = expr.replace("log", "l")
-expr = expr.replace("ln", "n")
-print(expr)
-expression = list(expr)
-print(expression)
-parseExp()
 
+
+class point(object):
+    def __init__(self,open_par,close_par):
+        self.OP = open_par
+        self.CP = close_par
+    def getOP(self):
+        return self.OP
+    def getCP(self):
+        return self.CP
+    def __str__(self):
+        return "( is " + str(self.OP) +"\n) is " + str(self.CP)
+        
+user_input = input("Evaluate: ")
+string = "(" + user_input + ")"
+string = string.replace(" ","")
+string = string.replace("{","(")
+stirng = string.replace("}",")")
+string = string.replace("sin", "s")
+string = string.replace("cos","c")
+string = string.replace("tan", "t")
+string = string.replace("log", "l")
+string = string.replace("ln", "n")
+
+numOP = 0
+numCP = 0
+flag = True
+for element in string:
+    if element == "(":
+        numOP+=1
+    elif element == ")":
+        numCP +=1
+print(string)
+iterator = 0
+if numOP==numCP:
+    flag = True
+else:
+    flag = False
+    print("parenthesis error")
+
+while "(" in string and flag:
+    iterator = 0
+    cp = 0
+    for element in string:
+        if element == "(":
+            cp = iterator
+        elif element == ")":
+            eval_expression = string[cp+1:iterator]
+            print(eval_expression)
+            ex_list = list(eval_expression)
+            number = evalExp(ex_list)
+            string = string.replace(string[cp:iterator+1],str(number))
+            print(string)
+            break
+        iterator +=1
+if string == "x":
+    print("try again")
+elif flag:
+    print("final answer: " + str(string))
+#expression = (list)(string)
+#print(expression)
+
+'''
+open_pars = []
+close_pars = []
+par_pairs = []
+iterator = 0
+flag = True
+while iterator < len(expression):
+    if expression[iterator] == "(":
+        open_pars.append(iterator)
+    elif expression[iterator] == ")":
+        close_pars.append(iterator)
+    iterator+=1
+if len(close_pars) == len(open_pars):
+    while len(close_pars) > 0:
+        par_pairs.append(point(open_pars.pop(), close_pars.pop(0)))
+else:
+    print("parenthesis error")
+    flag = False
+#at this point all the parentheses should be paired up from most inside to least
+iterator = 0
+while iterator < len(par_pairs) and flag:
+    operators = None
+    postfix = None
+    pair = par_pairs.pop(0)
+    op = pair.getOP()
+    cp = pair.getCP()
+    expr = string[op+1:cp]
+    ex_list = list(expr)
+    number = evalExp(ex_list)
+    print(str(number))
+    if is_float(number):
+        #we need to add this number back into our original expression,
+        #replacing the () we just evaluated. 
+        print("hi")
+    else:
+        print("system terminated")
+        flag = False
+    iterator+=1
+'''

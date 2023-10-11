@@ -4,6 +4,8 @@ Created on Mon Oct  9 21:10:58 2023
 
 @author: tallu
 """
+import math
+
 ex_list = []
 postfix = []
 operators = []
@@ -21,7 +23,7 @@ def evalExp(ex_list):
         elif element == "+" or element == "-" or element == "*" or element == "/":
             validExp = opVal(element)
         else:
-            eval_func(element)
+            validExp = eval_func(element)
     if validExp:
         print(postfix)
         print(operators)
@@ -47,10 +49,18 @@ def is_float(string):
         return False
 def shunting_algo():
     print("here")
+    '''
     while len(operators)>0:
         postfix.append(operators.pop(0))
+    '''
     print(postfix)
     stack = []
+    while len(operators)>0:
+        num_2 = postfix.pop()
+        num_1 = postfix.pop()
+        num = evaluate(num_1,num_2,operators.pop())
+        postfix.append(num)
+    '''
     while len(postfix)>0:
         print("postfix: ")
         print(postfix)
@@ -65,9 +75,10 @@ def shunting_algo():
             num = evaluate(num_1, num_2, element)
             print(str(num))
             stack[:0] = [num]
+    '''
     print("done w algo")
     print(stack)
-    return stack.pop()
+    return postfix.pop()
 def evaluate(n1,n2,element):
      if element == "+":
          return n1+n2
@@ -80,13 +91,60 @@ def evaluate(n1,n2,element):
 def eval_func(element):
     print("reached")
     if element == "c":
+        element = ex_list.pop(0)
+        flag = True
+        if element.isdigit():
+            flag = getNumVal(element)
+        if flag:
+            element = postfix.pop()
+            element = math.cos(element)
+            postfix.append(element)
         print("cosine")
+        return flag
     elif element == "s":
+        element = ex_list.pop(0)
+        flag = True
+        if element.isdigit():
+            flag = getNumVal(element)
+        if flag:
+            element = postfix.pop()
+            element = math.sin(element)
+            postfix.append(element)
         print("sin")
+        return flag
+    if element == "t":
+        element = ex_list.pop(0)
+        flag = True
+        if element.isdigit():
+            flag = getNumVal(element)
+        if flag:
+            element = postfix.pop()
+            element = math.tan(element)
+            postfix.append(element)
+        print("cosine")
+        return flag
     elif element == "l":
+        element = ex_list.pop(0)
+        flag = True
+        if element.isdigit():
+            flag = getNumVal(element)
+        if flag:
+            element = postfix.pop()
+            element = math.log10(element)
+            postfix.append(element)
         print("log")
+        return flag
     elif element == "n":
+        element = ex_list.pop(0)
+        flag = True
+        if element.isdigit():
+            flag = getNumVal(element)
+        if flag:
+            element = postfix.pop()
+            element = math.log(element)
+            postfix.append(element)
         print("natural log")
+        return flag
     else:
         print("invalid character")
         return False
@@ -125,6 +183,9 @@ def getNumVal(element):
                 char = ex_list[0]
             else:
                 char = None
+        elif char == "-" and element[-1]=="-":
+            print("too many minus signs")
+            return False
         else:
             char = None
     if expFlag == 1  and decFlag<2:
@@ -157,19 +218,37 @@ class point(object):
 user_input = input("Evaluate: ")
 string = "(" + user_input + ")"
 string = string.replace(" ","")
+string = string.replace("{","(")
+stirng = string.replace("}",")")
 string = string.replace("sin", "s")
 string = string.replace("cos","c")
+string = string.replace("tan", "t")
 string = string.replace("log", "l")
 string = string.replace("ln", "n")
+
+numOP = 0
+numCP = 0
+flag = True
+for element in string:
+    if element == "(":
+        numOP+=1
+    elif element == ")":
+        numCP +=1
 print(string)
 iterator = 0
-while "(" in string:
+if numOP==numCP:
+    flag = True
+else:
+    flag = False
+    print("parenthesis error")
+
+while "(" in string and flag:
     iterator = 0
     cp = 0
     for element in string:
         if element == "(":
             cp = iterator
-        if element == ")":
+        elif element == ")":
             eval_expression = string[cp+1:iterator]
             print(eval_expression)
             ex_list = list(eval_expression)
@@ -178,6 +257,10 @@ while "(" in string:
             print(string)
             break
         iterator +=1
+if string == "x":
+    print("try again")
+elif flag:
+    print("final answer: " + str(string))
 #expression = (list)(string)
 #print(expression)
 
