@@ -35,6 +35,10 @@ def evalExp(ex_list):
         return "x"
     print(postfix)
     print(operators)
+    '''
+    is_float func from:
+        https://pythonhow.com/how/check-if-a-string-is-a-float/#:~:text=To%20check%20if%20a%20string%20is%20a%20number%20(float)%20in,casted%20to%20float%20or%20not.
+    '''
 def is_float(string):
     try:
         float(string)
@@ -158,8 +162,26 @@ string = string.replace("cos","c")
 string = string.replace("log", "l")
 string = string.replace("ln", "n")
 print(string)
-expression = (list)(string)
-print(expression)
+iterator = 0
+while "(" in string:
+    iterator = 0
+    cp = 0
+    for element in string:
+        if element == "(":
+            cp = iterator
+        if element == ")":
+            eval_expression = string[cp+1:iterator]
+            print(eval_expression)
+            ex_list = list(eval_expression)
+            number = evalExp(ex_list)
+            string = string.replace(string[cp:iterator+1],str(number))
+            print(string)
+            break
+        iterator +=1
+#expression = (list)(string)
+#print(expression)
+
+'''
 open_pars = []
 close_pars = []
 par_pairs = []
@@ -180,6 +202,8 @@ else:
 #at this point all the parentheses should be paired up from most inside to least
 iterator = 0
 while iterator < len(par_pairs) and flag:
+    operators = None
+    postfix = None
     pair = par_pairs.pop(0)
     op = pair.getOP()
     cp = pair.getCP()
@@ -187,7 +211,6 @@ while iterator < len(par_pairs) and flag:
     ex_list = list(expr)
     number = evalExp(ex_list)
     print(str(number))
-    iterator+=1
     if is_float(number):
         #we need to add this number back into our original expression,
         #replacing the () we just evaluated. 
@@ -195,4 +218,5 @@ while iterator < len(par_pairs) and flag:
     else:
         print("system terminated")
         flag = False
-
+    iterator+=1
+'''
