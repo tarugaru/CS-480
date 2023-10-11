@@ -16,11 +16,91 @@ def evalExp(ex_list):
         validExp = getNumVal(element)
     while len(ex_list)>0 and validExp:
         element = ex_list.pop(0)
-        if element.isdigit():
+        if element.isdigit() or element == ".":
             validExp = getNumVal(element)
+        elif element == "+" or element == "-" or element == "*" or element == "/":
+            validExp = opVal(element)
+        else:
+            eval_func(element)
+    if validExp:
+        print(postfix)
+        print(operators)
+        num = shunting_algo()
+        print("eval expr now")
+        return num;
+    else:
+        print(postfix)
+        print(operators)
+        print ("function terminated")
+        return "x"
     print(postfix)
     print(operators)
-
+def is_float(string):
+    try:
+        float(string)
+        return True
+    except ValueError:
+        return False
+def shunting_algo():
+    print("here")
+    while len(operators)>0:
+        postfix.append(operators.pop(0))
+    print(postfix)
+    stack = []
+    while len(postfix)>0:
+        print("postfix: ")
+        print(postfix)
+        element = postfix.pop(0)
+        if is_float(element):
+            stack.append(element)
+            print("stack ")
+            print(stack)
+        else:
+            num_1 = stack.pop(0)
+            num_2 = stack.pop(0)
+            num = evaluate(num_1, num_2, element)
+            print(str(num))
+            stack[:0] = [num]
+    print("done w algo")
+    print(stack)
+    return stack.pop()
+def evaluate(n1,n2,element):
+     if element == "+":
+         return n1+n2
+     elif element == "-":
+         return n1-n2
+     elif element == "*":
+         return n1*n2
+     elif element == "/":
+         return n1/n2
+def eval_func(element):
+    print("reached")
+    if element == "c":
+        print("cosine")
+    elif element == "s":
+        print("sin")
+    elif element == "l":
+        print("log")
+    elif element == "n":
+        print("natural log")
+    else:
+        print("invalid character")
+        return False
+def opVal(element):
+    flag = True
+    if len(operators)>0:
+        prevOp = operators[len(operators)-1]
+        if (prevOp == "*" or prevOp == "/") and (element == "+" or element == "-"):
+            postfix.append(prevOp)
+            operators.pop()
+            operators.append(element)
+        else:
+            operators.append(element)
+    else:
+        operators.append(element)
+    if len(ex_list) > 0 and ex_list[0] == "-":
+        flag = getNumVal(ex_list.pop(0))
+    return flag
 def getNumVal(element):    
     #parse through ex_list to get the number together
     char = None
@@ -72,6 +152,11 @@ class point(object):
         
 user_input = input("Evaluate: ")
 string = "(" + user_input + ")"
+string = string.replace(" ","")
+string = string.replace("sin", "s")
+string = string.replace("cos","c")
+string = string.replace("log", "l")
+string = string.replace("ln", "n")
 print(string)
 expression = (list)(string)
 print(expression)
@@ -101,5 +186,13 @@ while iterator < len(par_pairs) and flag:
     expr = string[op+1:cp]
     ex_list = list(expr)
     number = evalExp(ex_list)
+    print(str(number))
     iterator+=1
+    if is_float(number):
+        #we need to add this number back into our original expression,
+        #replacing the () we just evaluated. 
+        print("hi")
+    else:
+        print("system terminated")
+        flag = False
 
