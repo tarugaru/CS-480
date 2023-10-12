@@ -16,7 +16,6 @@ postfix = []
 operators = []
 
 def evalExp(ex_list):
-    #print(ex_list)
     validExp = True
     if ex_list[0] == "-":
         element = ex_list.pop(0)
@@ -30,37 +29,37 @@ def evalExp(ex_list):
         else:
             validExp = eval_func(element)
     if validExp:
-        #print(postfix)
-        #print(operators)
         num = shunting_algo()
-        #print("eval expr now")
         return num;
     else:
-        #print(postfix)
-        #print(operators)
-        #print ("function terminated")
         return "x"
-    '''
-    is_float func from:
-        https://pythonhow.com/how/check-if-a-string-is-a-float/#:~:text=To%20check%20if%20a%20string%20is%20a%20number%20(float)%20in,casted%20to%20float%20or%20not.
-    '''
+    
+def shunting_algo():
+    while len(operators)>0:
+        element = operators.pop(0)
+        postfix.append(element)
+    stack = []
+    while len(postfix)>0:
+        if is_float(postfix[0]):
+            stack.append(postfix.pop(0))
+        else:
+            n1 = stack.pop(0)
+            n2 = stack.pop(0)
+            result = evaluate(n1,n2,postfix.pop(0))
+            stack.insert(0,result)
+    return stack.pop()
+
+'''
+is_float func from:
+    https://pythonhow.com/how/check-if-a-string-is-a-float/#:~:text=To%20check%20if%20a%20string%20is%20a%20number%20(float)%20in,casted%20to%20float%20or%20not.
+'''
 def is_float(string):
     try:
         float(string)
         return True
     except ValueError:
         return False
-def shunting_algo():
-    while len(operators)>0:
-        num_2 = postfix.pop()
-        num_1 = postfix.pop()
-        num = evaluate(num_1,num_2,operators.pop())
-        if num == "x":
-            return num
-        postfix.append(num)
-    #print("done w algo")
-    #print(stack)
-    return postfix.pop()
+    
 def evaluate(n1,n2,element):
      if element == "+":
          return n1+n2
@@ -109,42 +108,49 @@ def eval_func(element):
         #print("cosine")
         return flag
     elif element == "l":
-        element = ex_list.pop(0)
-        flag = True
-        if element.isdigit():
-            flag = getNumVal(element)
-        if flag:
-            element = postfix.pop()
-            element = math.log10(element)
-            postfix.append(element)
-        #print("log")
-        return flag
+        try:
+            element = ex_list.pop(0)
+            flag = True
+            if element.isdigit():
+                flag = getNumVal(element)
+            if flag:
+                element = postfix.pop()
+                element = math.log10(element)
+                postfix.append(element)
+            #print("log")
+            return flag
+        except Exception as e:
+            print("Invalid log")
+            return False
     elif element == "n":
-        element = ex_list.pop(0)
-        flag = True
-        if element.isdigit():
-            flag = getNumVal(element)
-        if flag:
-            element = postfix.pop()
-            element = math.log(element)
-            postfix.append(element)
-        #print("natural log")
-        return flag
+        try:
+            element = ex_list.pop(0)
+            flag = True
+            if element.isdigit():
+                flag = getNumVal(element)
+            if flag:
+                element = postfix.pop()
+                element = math.log(element)
+                postfix.append(element)
+            #print("natural log")
+            return flag
+        except Exception as e:
+            print("Invalid natural log")
+            return False
     else:
         print("ERROR: INVALID CHARACTER")
         return False
 def opVal(element):
     flag = True
-    if len(operators)>0:
+    opPrec = True
+    while len(operators)>0 and opPrec:
         prevOp = operators[len(operators)-1]
         if (prevOp == "*" or prevOp == "/") and (element == "+" or element == "-"):
             postfix.append(prevOp)
             operators.pop()
-            operators.append(element)
         else:
-            operators.append(element)
-    else:
-        operators.append(element)
+            opPrec = False
+    operators.append(element)
     if len(ex_list) > 0 and ex_list[0] == "-":
         flag = getNumVal(ex_list.pop(0))
     return flag
@@ -233,7 +239,7 @@ while(user_flag):
         flag = True
     else:
         flag = False
-        print("ERROR: PARENTHESIS")
+        print("ERROR: PARENTHESIS\nTry Again")
     
     while "(" in string and flag:
         iterator = 0
@@ -242,13 +248,18 @@ while(user_flag):
             if element == "(":
                 cp = iterator
             elif element == ")":
-                eval_expression = string[cp+1:iterator]
-                #print(eval_expression)
-                ex_list = list(eval_expression)
-                number = evalExp(ex_list)
-                string = string.replace(string[cp:iterator+1],str(number))
-                #print(string)
-                break
+                try:
+                    eval_expression = string[cp+1:iterator]
+                    #print(eval_expression)
+                    ex_list = list(eval_expression)
+                    number = evalExp(ex_list)
+                    string = string.replace(string[cp:iterator+1],str(number))
+                    #print(string)
+                    break
+                except Exception as e:
+                    print("ERROR")
+                    string = "x"
+                    break
             iterator +=1
     if string == "x":
         print("Try Again\n")
