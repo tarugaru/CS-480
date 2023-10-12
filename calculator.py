@@ -14,7 +14,7 @@ import math
 ex_list = []
 postfix = []
 operators = []
-
+#left to right parsing of string [independent of parentheses]
 def evalExp(ex_list):
     validExp = True
     if ex_list[0] == "-":
@@ -33,7 +33,7 @@ def evalExp(ex_list):
         return num;
     else:
         return "x"
-    
+#uses the postfix notation to evaluate the expression and then returns the eval'd number
 def shunting_algo():
     while len(operators)>0:
         element = operators.pop(0)
@@ -59,7 +59,7 @@ def is_float(string):
         return True
     except ValueError:
         return False
-    
+#used by the shunting_algo in order to evaluate num operator num expression that is given    
 def evaluate(n1,n2,element):
      if element == "+":
          return n1+n2
@@ -72,6 +72,7 @@ def evaluate(n1,n2,element):
              print("ERROR: DIVIDING BY 0")
              return "x"
          return n1/n2
+#evaluation of the trig functions: cos,sin,tan,log,ln
 def eval_func(element):
     #print("reached")
     if element == "c":
@@ -140,6 +141,7 @@ def eval_func(element):
     else:
         print("ERROR: INVALID CHARACTER")
         return False
+#adding operators to the stack and to postfix if precedence exists
 def opVal(element):
     flag = True
     opPrec = True
@@ -193,18 +195,6 @@ def getNumVal(element):
     else:
         print("ERROR: NUMERICAL \n")
         return False
-
-
-class point(object):
-    def __init__(self,open_par,close_par):
-        self.OP = open_par
-        self.CP = close_par
-    def getOP(self):
-        return self.OP
-    def getCP(self):
-        return self.CP
-    def __str__(self):
-        return "( is " + str(self.OP) +"\n) is " + str(self.CP)
 
 print("Welcome to the python calculator app. Please follow the instructions in the READ" +
       "ME!\n***Remember: If you want to exit the program, input 'x' when it prompts you" +
