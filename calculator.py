@@ -40,8 +40,6 @@ def evalExp(ex_list):
         #print(operators)
         #print ("function terminated")
         return "x"
-    #print(postfix)
-    #print(operators)
     '''
     is_float func from:
         https://pythonhow.com/how/check-if-a-string-is-a-float/#:~:text=To%20check%20if%20a%20string%20is%20a%20number%20(float)%20in,casted%20to%20float%20or%20not.
@@ -53,12 +51,6 @@ def is_float(string):
     except ValueError:
         return False
 def shunting_algo():
-    #print("here")
-    '''
-    while len(operators)>0:
-        postfix.append(operators.pop(0))
-    '''
-    #print(postfix)
     while len(operators)>0:
         num_2 = postfix.pop()
         num_1 = postfix.pop()
@@ -134,7 +126,7 @@ def eval_func(element):
         #print("natural log")
         return flag
     else:
-        #print("invalid character")
+        print("ERROR: INVALID CHARACTER")
         return False
 def opVal(element):
     flag = True
@@ -172,7 +164,7 @@ def getNumVal(element):
             else:
                 char = None
         elif char == "-" and element[-1]=="-":
-            print("too many minus signs")
+            print("ERROR:MINUS SIGNS \n")
             return False
         else:
             char = None
@@ -188,7 +180,7 @@ def getNumVal(element):
         postfix.append(element)
         return True
     else:
-        print("numerical error")
+        print("ERROR: NUMERICAL \n")
         return False
 
 
@@ -202,51 +194,59 @@ class point(object):
         return self.CP
     def __str__(self):
         return "( is " + str(self.OP) +"\n) is " + str(self.CP)
-        
-user_input = input("Evaluate: ")
-string = "(" + user_input + ")"
-string = string.replace(" ","")
-string = string.replace("{","(")
-stirng = string.replace("}",")")
-string = string.replace("sin", "s")
-string = string.replace("cos","c")
-string = string.replace("tan", "t")
-string = string.replace("log", "l")
-string = string.replace("ln", "n")
 
-numOP = 0
-numCP = 0
-flag = True
-for element in string:
-    if element == "(":
-        numOP+=1
-    elif element == ")":
-        numCP +=1
-print(string)
-iterator = 0
-if numOP==numCP:
+print("Welcome to the python calculator app. Please follow the instructions in the READ" +
+      "ME!\n***Remember: If you want to exit the program, input 'x' when it prompts you" +
+      "for an expression to evaluate!\n\n")
+user_flag = True
+while(user_flag):
+    user_input = input("Evaluate: ")
+    user_input = user_input.lower()
+    if(user_input == "x"):
+        print("Thank you for using the python calculator app! \n**user terminated**")
+        break
+    string = "(" + user_input + ")"
+    string = string.replace(" ","")
+    string = string.replace("{","(")
+    stirng = string.replace("}",")")
+    string = string.replace("sin", "s")
+    string = string.replace("cos","c")
+    string = string.replace("tan", "t")
+    string = string.replace("log", "l")
+    string = string.replace("ln", "n")
+    numOP = 0
+    numCP = 0
     flag = True
-else:
-    flag = False
-    print("parenthesis error")
-
-while "(" in string and flag:
-    iterator = 0
-    cp = 0
     for element in string:
         if element == "(":
-            cp = iterator
+            numOP+=1
         elif element == ")":
-            eval_expression = string[cp+1:iterator]
-            print(eval_expression)
-            ex_list = list(eval_expression)
-            number = evalExp(ex_list)
-            string = string.replace(string[cp:iterator+1],str(number))
-            print(string)
-            break
-        iterator +=1
-if string == "x":
-    print("try again")
-elif flag:
-    print("final answer: " + str(string))
+            numCP +=1
+    #print(string)
+    iterator = 0
+    if numOP==numCP:
+        flag = True
+    else:
+        flag = False
+        print("ERROR: PARENTHESIS")
+    
+    while "(" in string and flag:
+        iterator = 0
+        cp = 0
+        for element in string:
+            if element == "(":
+                cp = iterator
+            elif element == ")":
+                eval_expression = string[cp+1:iterator]
+                #print(eval_expression)
+                ex_list = list(eval_expression)
+                number = evalExp(ex_list)
+                string = string.replace(string[cp:iterator+1],str(number))
+                #print(string)
+                break
+            iterator +=1
+    if string == "x":
+        print("try again")
+    elif flag:
+        print("final answer: " + str(string) +"\n")
 
