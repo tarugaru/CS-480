@@ -55,6 +55,8 @@ def shunting_algo():
         num_2 = postfix.pop()
         num_1 = postfix.pop()
         num = evaluate(num_1,num_2,operators.pop())
+        if num == "x":
+            return num
         postfix.append(num)
     #print("done w algo")
     #print(stack)
@@ -67,6 +69,9 @@ def evaluate(n1,n2,element):
      elif element == "*":
          return n1*n2
      elif element == "/":
+         if n2==0:
+             print("ERROR: DIVIDING BY 0")
+             return "x"
          return n1/n2
 def eval_func(element):
     #print("reached")
@@ -246,7 +251,7 @@ while(user_flag):
                 break
             iterator +=1
     if string == "x":
-        print("try again")
+        print("Try Again\n")
     elif flag:
-        print("final answer: " + str(string) +"\n")
+        print("Answer: " + str(string) +"\n")
 
