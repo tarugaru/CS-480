@@ -14,6 +14,9 @@ class expression:
         self.length = length
         self.start_expr()
     
+    def get_expr(self):
+        return self.expr
+    
     def start_expr(self):
         #an expression can start with a number, an open parenthesis, or a function call
         i = random.randint(1,3)
@@ -23,7 +26,7 @@ class expression:
             self.add_open_par()
         else:
             self.add_func()
-        print(i)
+        #print(i)
         '''
         functions = [self.add_num(), self.add_open_par(), self.add_func()]
         rand_func = random.choice(functions)
@@ -38,8 +41,11 @@ class expression:
         if decimal:
             decimal = random.randint(0,1000)
             num = str(num) + "." +  str(decimal)
+        neg = random.randint(0,1)
+        if neg:
+            self.expr+="-"
         self.expr = self.expr + str(num)
-        print(self.expr)
+        #print(self.expr)
         #ADD THE GO TO ADD_OP OR ADD_CLOSED_PAR IF OPEN_PAR>0 LATER
         if(self.open_par>0):
             i = random.randint(0,1)
@@ -51,36 +57,44 @@ class expression:
             self.add_op()
             
     def add_open_par(self):
-        if len(self.expr)>self.length:
-            self.finish_expr()
-        else:
-            self.expr = self.expr + "("
-            self.open_par +=1
-            print(self.expr)
-            self.start_expr()
+        self.expr = self.expr + "("
+        self.open_par +=1
+        #print(self.expr)
+        self.start_expr()
         
     def add_func(self):
         functions = ["cos(", "tan(", "sin(", "cot(", "log(", "ln("]
         rand_func = random.choice(functions)
         self.expr += rand_func
         self.open_par +=1
-        print(self.expr)
+        #print(self.expr)
         self.start_expr()
     
     def add_op(self):
         operators = ["+","-","*","/","^"]
         rand_op = random.choice(operators)
         self.expr += rand_op
-        print(self.expr)
+        #print(self.expr)
         self.start_expr()
     
     def add_closed_par(self):
-        self.expr +=")"
-        self.open_par-=1
-        print(self.expr)
+        if len(self.expr)>self.length:
+            #print("entered finished")
+            self.finish_expr()
+        else:
+            #print("entered closed")
+            self.expr +=")"
+            self.open_par-=1
+            #print(self.expr)
+            self.add_op()
         
     def finish_expr(self):
         while self.open_par>0:
-            self.add_closed_par()
+            self.expr+=")"
+            self.open_par-=1
+            #print(self.expr)
         
-expression(5)
+equation_to_eval = expression(100)
+expr = equation_to_eval.get_expr()
+print(expr)
+print("=" + str(eval(expr)))
