@@ -196,63 +196,69 @@ def getNumVal(element):
         print("ERROR: NUMERICAL \n")
         return False
 
-print("Welcome to the python calculator app. Please follow the instructions in the READ" +
-      "ME!\n***Remember: If you want to exit the program, input 'x' when it prompts you" +
-      "for an expression to evaluate!\n\n")
-user_flag = True
-while(user_flag):
-    user_input = input("Evaluate: ")
-    user_input = user_input.lower()
-    if(user_input == "x"):
-        print("Thank you for using the python calculator app! \n**user terminated**")
-        break
-    string = "(" + user_input + ")"
-    string = string.replace(" ","")
-    string = string.replace("{","(")
-    stirng = string.replace("}",")")
-    string = string.replace("sin", "s")
-    string = string.replace("cos","c")
-    string = string.replace("tan", "t")
-    string = string.replace("log", "l")
-    string = string.replace("ln", "n")
-    numOP = 0
-    numCP = 0
-    flag = True
-    for element in string:
-        if element == "(":
-            numOP+=1
-        elif element == ")":
-            numCP +=1
-    #print(string)
-    iterator = 0
-    if numOP==numCP:
-        flag = True
-    else:
-        flag = False
-        print("ERROR: PARENTHESIS\nTry Again")
+def calculate(user_input):
+    '''
+        print("Welcome to the python calculator app. Please follow the instructions in the READ" +
+          "ME!\n***Remember: If you want to exit the program, input 'x' when it prompts you" +
+          "for an expression to evaluate!\n\n")
     
-    while "(" in string and flag:
-        iterator = 0
-        cp = 0
+    user_flag = True
+    while(user_flag):
+        user_input = input("Evaluate: ")
+        user_input = user_input.lower()
+        if(user_input == "x"):
+            print("Thank you for using the python calculator app! \n**user terminated**")
+            break
+    '''
+    user_flag = True
+    while(user_flag):
+        string = "(" + user_input + ")"
+        string = string.replace(" ","")
+        string = string.replace("{","(")
+        string = string.replace("}",")")
+        string = string.replace("math.sin", "s")
+        string = string.replace("math.cos","c")
+        string = string.replace("math.tan", "t")
+        string = string.replace("math.log10", "l")
+        string = string.replace("math.log", "n")
+        numOP = 0
+        numCP = 0
+        flag = True
         for element in string:
             if element == "(":
-                cp = iterator
+                numOP+=1
             elif element == ")":
-                try:
-                    eval_expression = string[cp+1:iterator]
-                    #print(eval_expression)
-                    ex_list = list(eval_expression)
-                    number = evalExp(ex_list)
-                    string = string.replace(string[cp:iterator+1],str(number))
-                    #print(string)
-                    break
-                except Exception as e:
-                    print("ERROR")
-                    string = "x"
-                    break
-            iterator +=1
-    if string == "x":
-        print("Try Again\n")
-    elif flag:
-        print("Answer: " + str(string) +"\n")
-
+                numCP +=1
+        #print(string)
+        iterator = 0
+        if numOP==numCP:
+            flag = True
+        else:
+            flag = False
+            print("ERROR: PARENTHESIS\nTry Again")
+        
+        while "(" in string and flag:
+            iterator = 0
+            cp = 0
+            for element in string:
+                if element == "(":
+                    cp = iterator
+                elif element == ")":
+                    try:
+                        eval_expression = string[cp+1:iterator]
+                        #print(eval_expression)
+                        ex_list = list(eval_expression)
+                        number = evalExp(ex_list)
+                        string = string.replace(string[cp:iterator+1],str(number))
+                        #print(string)
+                        break
+                    except Exception as e:
+                        print("ERROR")
+                        string = "x"
+                        break
+                iterator +=1
+        if string == "x":
+            user_flag = False
+        elif flag:
+            print("Answer: " + str(string) +"\n")
+    
