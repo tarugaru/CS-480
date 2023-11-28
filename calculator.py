@@ -221,6 +221,7 @@ def calculate(user_input):
         string = string.replace("math.tan", "t")
         string = string.replace("math.log10", "l")
         string = string.replace("math.log", "n")
+        '''
         numOP = 0
         numCP = 0
         flag = True
@@ -236,7 +237,7 @@ def calculate(user_input):
         else:
             flag = False
             #print("ERROR: PARENTHESIS\nTry Again")
-        
+        '''
         while "(" in string and flag:
             iterator = 0
             cp = 0
