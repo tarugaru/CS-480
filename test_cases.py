@@ -7,7 +7,7 @@ Created on Wed Nov 15 13:24:19 2023
 """
 import random
 import math
-from calculator import *
+from calculator import calculate
 
 
 class expression:
@@ -40,10 +40,10 @@ class expression:
         '''
 
     def add_num(self):
-        num = random.randint(0, 10000)
+        num = random.randint(0, 100)
         decimal = random.randint(0, 1)
         if decimal:
-            decimal = random.randint(0, 10000)
+            decimal = random.randint(0, 100)
             num = str(num) + "." + str(decimal)
         neg = random.randint(0, 1)
         if neg:
@@ -99,17 +99,29 @@ class expression:
             self.open_par -= 1
             # print(self.expr)
 
-
 num_loop = input("How many expressions would you like to compute? ")
-
+num_correct = 0
 for i in range(int(num_loop)):
     equation_to_eval = expression(10)
-    calculate(equation_to_eval.get_expr())
+    equation_to_eval_str = equation_to_eval.get_expr()
+    print("Test Case #" + str(i+1) + ": "+ equation_to_eval_str)
+    calculator_ans = calculate(equation_to_eval_str)
     try:
-        print("=" + str(eval(equation_to_eval.get_expr())))
+        eval_ans = eval(equation_to_eval_str)
     except Exception as e:
-        print(e)
-        print("Error")
+        eval_ans = "e"
+    #print("eval ans: " + str(eval_ans))
+    #print("calc ans: " + calculator_ans)
+    if eval_ans == calculator_ans:
+        num_correct += 1 
+        print("PASSED\n")
+        #print("num_correct = " + str(num_correct) )
+    else:
+        print("FAILED\n")
+success_rate = (num_correct / int(num_loop)) * 100
+print("\nTEST CASES DONE:")
+print(str(num_correct) + " PASSED")
+print(str(success_rate) + "% success rate")
 '''
 equation_to_eval = expression(25)
 expr = equation_to_eval.get_expr()

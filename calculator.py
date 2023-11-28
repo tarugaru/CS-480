@@ -69,7 +69,7 @@ def evaluate(n1,n2,element):
          return n1*n2
      elif element == "/":
          if n2==0:
-             print("ERROR: DIVIDING BY 0")
+             #print("ERROR: DIVIDING BY 0")
              return "x"
          return n1/n2
 #evaluation of the trig functions: cos,sin,tan,log,ln
@@ -121,7 +121,7 @@ def eval_func(element):
             #print("log")
             return flag
         except Exception as e:
-            print("Invalid log")
+            #print("Invalid log")
             return False
     elif element == "n":
         try:
@@ -136,10 +136,10 @@ def eval_func(element):
             #print("natural log")
             return flag
         except Exception as e:
-            print("Invalid natural log")
+            #print("Invalid natural log")
             return False
     else:
-        print("ERROR: INVALID CHARACTER")
+        #print("ERROR: INVALID CHARACTER")
         return False
 #adding operators to the stack and to postfix if precedence exists
 def opVal(element):
@@ -177,7 +177,7 @@ def getNumVal(element):
             else:
                 char = None
         elif char == "-" and element[-1]=="-":
-            print("ERROR:MINUS SIGNS \n")
+            #("ERROR:MINUS SIGNS \n")
             return False
         else:
             char = None
@@ -193,7 +193,7 @@ def getNumVal(element):
         postfix.append(element)
         return True
     else:
-        print("ERROR: NUMERICAL \n")
+        #print("ERROR: NUMERICAL \n")
         return False
 
 def calculate(user_input):
@@ -235,7 +235,7 @@ def calculate(user_input):
             flag = True
         else:
             flag = False
-            print("ERROR: PARENTHESIS\nTry Again")
+            #print("ERROR: PARENTHESIS\nTry Again")
         
         while "(" in string and flag:
             iterator = 0
@@ -245,20 +245,28 @@ def calculate(user_input):
                     cp = iterator
                 elif element == ")":
                     try:
+                        #print("1")
                         eval_expression = string[cp+1:iterator]
                         #print(eval_expression)
+                        #print("2")
                         ex_list = list(eval_expression)
+                        #print("3")
                         number = evalExp(ex_list)
+                        #print("4")
                         string = string.replace(string[cp:iterator+1],str(number))
                         #print(string)
                         break
                     except Exception as e:
-                        print("ERROR")
+                        #print("ERROR: " + str(e))
                         string = "x"
                         break
                 iterator +=1
         if string == "x":
             user_flag = False
+            return "e"
         elif flag:
-            print("Answer: " + str(string) +"\n")
+            #print("Answer: " + str(string) +"\n")
+            flag = False
+            user_flag = False
+            return string
     
