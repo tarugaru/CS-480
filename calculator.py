@@ -238,36 +238,40 @@ def calculate(user_input):
             flag = False
             #print("ERROR: PARENTHESIS\nTry Again")
         '''
-        while "(" in string and flag:
-            iterator = 0
-            cp = 0
-            for element in string:
-                if element == "(":
-                    cp = iterator
-                elif element == ")":
-                    try:
-                        #print("1")
-                        eval_expression = string[cp+1:iterator]
-                        #print(eval_expression)
-                        #print("2")
-                        ex_list = list(eval_expression)
-                        #print("3")
-                        number = evalExp(ex_list)
-                        #print("4")
-                        string = string.replace(string[cp:iterator+1],str(number))
-                        #print(string)
-                        break
-                    except Exception as e:
-                        #print("ERROR: " + str(e))
-                        string = "x"
-                        break
-                iterator +=1
-        if string == "x":
-            user_flag = False
+        try:
+            flag = True
+            while "(" in string and flag:
+                iterator = 0
+                cp = 0
+                for element in string:
+                    if element == "(":
+                        cp = iterator
+                    elif element == ")":
+                        try:
+                            #print("1")
+                            eval_expression = string[cp+1:iterator]
+                            #print(eval_expression)
+                            #print("2")
+                            ex_list = list(eval_expression)
+                            #print("3")
+                            number = evalExp(ex_list)
+                            #print("4")
+                            string = string.replace(string[cp:iterator+1],str(number))
+                            #print(string)
+                            break
+                        except Exception as e:
+                            #print("ERROR: " + str(e))
+                            string = "x"
+                            break
+                    iterator = iterator + 1
+            if string == "x":
+                user_flag = False
+                return "e"
+            elif flag:
+                #print("Answer: " + str(string) +"\n")
+                flag = False
+                user_flag = False
+                return string
+        except Exception as e:
             return "e"
-        elif flag:
-            #print("Answer: " + str(string) +"\n")
-            flag = False
-            user_flag = False
-            return string
     

@@ -127,7 +127,7 @@ class expression:
         self.start_expr()
 
     def add_op(self):
-        operators = ["+", "-", "*", "/"]
+        operators = ["+", "-", "*", "/","^"]
         rand_op = random.choice(operators)
         self.expr += rand_op
         # print(self.expr)
@@ -204,7 +204,7 @@ for i in range(int(num_loop_incorrect)):
     expr = expression(25)
     equation_to_eval = typo_expression(expr)
     equation_to_eval_str = equation_to_eval.get_expr()
-    print("Test Case #" + str(i+num_loop_correct+1) + ": ")
+    print("Test Case #" + str(int(i+num_loop_correct+1)) + ": ")
     print(equation_to_eval)
     num_correct = compare(equation_to_eval_str, num_correct)
 success_rate = (num_correct / int(num_loop)) * 100
