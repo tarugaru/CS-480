@@ -1,16 +1,13 @@
 # CS-480
 Advanced Software Engineering: Dr. Vajda Fall 2023
-Python Calculator App!
+Python Calculator App Testing
 
-This is a python app that should have no requirements when it comes to hardware, just make sure the latest version of python is installed.
+Running this file "test_cases.py" will prompt the user to input the number of test cases they wish the program to produce. At that point the program will compute two batches of testcases-- one of correct expressions and another batch of incorrect expressions. Each test case will be numbered and display the expression to the user, after that line it will say whether the test passed or failed. After all test cases have run, the program will say how many cases passed and what the success rate was. At this point the program will terminate! 
 
-To use this calculator wait for the prompting statement "Evaluate:" This is where you will put in your expression to be evaluated! 
-Some things to remember:
-*The Enter Key is your equals sign (=)! Placing an equals sign will result in an error statement (not a program crash)...
-*After hitting the enter key, your expression will be evaluated, if it cannot be evaluated you will receive an error message. 
-*The pi symbol is not accounted for in this program version, so putting in "pi" will result in an error message
-*the following arithmetic functions can be used: cos(),sin(),tan(),log() [base 10 only], ln(). 
-  *there is a short cut for these if you wish to save time: c,s,t,l,n, respectively
-    *example: inputting c0 is equivalent to inputting cos(0)
-    **note: inputting c0+6 is not the same as inputting cos(0+6) [if you wish to evaluate an expression inside a cos() function correctly, you must use cos(expression)]
-  
+This is a python app that should have no requirements when it comes to hardware, just make sure the latest version of python is installed. The program calculator.py must also be saved in the same folder location! 
+
+Please note that the incorrect functions are computed by passing through a correct expression through a function called typo_expression()... This function simulates different typos a user might make, like forgetting or adding an extra parenthesis (or other character). The expression is "typo'ed" a random amount of times (at least once)! 
+
+In some of the incorrect expressions you will see "math.cos" or some other trig function written incorrectly, this is because the eval() function does not recognize cos() without specifying the math library.
+
+There might also be some syntax warning messages after running the program, those are something I am currently working on fixing! 
